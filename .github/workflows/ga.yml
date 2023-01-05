@@ -4,7 +4,9 @@ name: armTemplateDeploy
 
 
 on:
-   
+  push:
+    branches:
+      - main   
   workflow_dispatch:
 
 
@@ -23,3 +25,10 @@ jobs:
         uses: Azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDS }}
+
+      - name: Deploy Resource Group
+        uses: Azure/cli@v1
+        with:
+          inlinescript: |
+            az deployment sub create -- location "Sweden Central" --template-file ./armTemplates/resourcegroup.json
+
